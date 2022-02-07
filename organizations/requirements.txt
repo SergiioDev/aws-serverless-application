@@ -1,0 +1,7 @@
+requests
+ujson
+pymongo
+marshmallow
+dnspython
+pyjwt
+argon2-cffi
