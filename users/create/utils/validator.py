@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, post_load, ValidationError
 from argon2 import PasswordHasher
-from generalUtils import db
+from utils import db
 
 
 def encrypt(plain_text_password):
