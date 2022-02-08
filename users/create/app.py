@@ -8,7 +8,7 @@ def lambda_handler(event, context):
     try:
         print(event)
         body = ujson.loads(event["body"])
-        user = validator.UserRegistrationSchema()
+        user = validator.UserSchema()
 
         if user is not None:
             mongo = db.MongoDBConnection()

@@ -9,7 +9,7 @@ def encrypt(plain_text_password):
     return hashed_password
 
 
-class UserRegistrationSchema(Schema):
+class UserSchema(Schema):
     email = fields.Email(required=True)
     username = fields.Str(required=True)
     first_name = fields.Str(required=True)
