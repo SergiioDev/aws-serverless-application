@@ -1,8 +1,7 @@
 import json
 import ujson
 from marshmallow import ValidationError
-from .utils import validator
-from utils import db
+from utils import db, validator
 
 
 def lambda_handler(event, context):
