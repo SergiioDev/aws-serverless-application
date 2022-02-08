@@ -40,3 +40,18 @@ Resources:
           Properties:
             Path: /users/{id}
             Method: get
+
+  UsersUpdateById:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: users/
+      Handler: update.app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        UsersUpdateByIdPutAPI:
+          Type: Api
+          Properties:
+            Path: /users/{id}
+            Method: put
