@@ -26,3 +26,17 @@ Resources:
           Properties:
             Path: /users/
             Method: post
+  UsersRetrieveById:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: users/
+      Handler: read.app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        UsersRetrieveByIdGetAPI:
+          Type: Api
+          Properties:
+            Path: /users/{id}
+            Method: get
