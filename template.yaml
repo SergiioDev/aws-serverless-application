@@ -12,32 +12,60 @@ Globals:
     MemorySize: 2048
 
 Resources:
+  UsersApi:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: Prod
+      Auth:
+        DefaultAuthorizer: JWTAuthorizer
+        Authorizers:
+          JWTAuthorizer:
+            FunctionArn: !GetAtt JWTAuthFunction.Arn
+  JWTAuthFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: users/
+      Handler: authorizer.app.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          SECRET_KEY: secret-key
+
   UserCreate:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: users/
       Handler: create.app.lambda_handler
       Runtime: python3.9
+      Environment:
+        Variables:
+          SECRET_KEY: secret-key
       Architectures:
         - x86_64
       Events:
         UserCreatePostAPI:
           Type: Api
           Properties:
+            RestApiId: !Ref UsersApi
             Path: /users/
             Method: post
+
   UsersRetrieveById:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: users/
       Handler: read.app.lambda_handler
       Runtime: python3.9
+      Environment:
+        Variables:
+          SECRET_KEY: secret-key
       Architectures:
         - x86_64
       Events:
         UsersRetrieveByIdGetAPI:
           Type: Api
           Properties:
+            RestApiId: !Ref UsersApi
             Path: /users/{id}
             Method: get
 
@@ -47,12 +75,16 @@ Resources:
       CodeUri: users/
       Handler: update.app.lambda_handler
       Runtime: python3.9
+      Environment:
+        Variables:
+          SECRET_KEY: secret-key
       Architectures:
         - x86_64
       Events:
         UsersUpdateByIdPutAPI:
           Type: Api
           Properties:
+            RestApiId: !Ref UsersApi
             Path: /users/{id}
             Method: put
 
@@ -62,11 +94,15 @@ Resources:
       CodeUri: users/
       Handler: delete.app.lambda_handler
       Runtime: python3.9
+      Environment:
+        Variables:
+          SECRET_KEY: secret-key
       Architectures:
         - x86_64
       Events:
         UsersDeleteByIdAPI:
           Type: Api
           Properties:
+            RestApiId: !Ref UsersApi
             Path: /users/{id}
             Method: delete
