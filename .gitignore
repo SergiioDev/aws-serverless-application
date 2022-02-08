@@ -194,7 +194,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -241,4 +240,5 @@ $RECYCLE.BIN/
 
 */build/*
 
-# End of https://www.gitignore.io/api/osx,linux,python,windows,pycharm,visualstudiocode
+# End of https://www.gitignore.io/api/osx,linux,python,windows,pycharm,visualstudiocode!/users/utils/db.py
+/users/utils/db.py
