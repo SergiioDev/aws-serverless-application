@@ -13,7 +13,7 @@ Globals:
 
 Resources:
   UsersApi:
-    Type: 'AWS::Serverless::Api'
+    Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
       Auth:
@@ -22,7 +22,7 @@ Resources:
           JWTAuthorizer:
             FunctionArn: !GetAtt JWTAuthFunction.Arn
   JWTAuthFunction:
-    Type: 'AWS::Serverless::Function'
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: users/
       Handler: authorizer.app.lambda_handler
@@ -39,7 +39,7 @@ Resources:
       Runtime: python3.9
       Environment:
         Variables:
-          SECRET_KEY: secret-key
+          SECRET_KEY: secret-info
       Architectures:
         - x86_64
       Events:
@@ -58,7 +58,7 @@ Resources:
       Runtime: python3.9
       Environment:
         Variables:
-          SECRET_KEY: secret-key
+          SECRET_KEY: secret-info
       Architectures:
         - x86_64
       Events:
@@ -77,7 +77,7 @@ Resources:
       Runtime: python3.9
       Environment:
         Variables:
-          SECRET_KEY: secret-key
+          SECRET_KEY: secret-info
       Architectures:
         - x86_64
       Events:
@@ -96,7 +96,7 @@ Resources:
       Runtime: python3.9
       Environment:
         Variables:
-          SECRET_KEY: secret-key
+          SECRET_KEY: secret-info
       Architectures:
         - x86_64
       Events:
@@ -106,3 +106,37 @@ Resources:
             RestApiId: !Ref UsersApi
             Path: /users/{id}
             Method: delete
+
+  UserLogin:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: users/
+      Handler: login.app.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          SECRET_KEY: secret-info
+      Events:
+        LoginAPI:
+          Type: Api
+          Properties:
+            RestApiId: !Ref UsersApi
+            Path: /users/login/
+            Method: post
+
+  RefreshToken:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: users/
+      Handler: login.app.token_refresh
+      Runtime: python3.9
+      Environment:
+        Variables:
+          SECRET_KEY: secret-info
+      Events:
+        RefreshTokenAPI:
+          Type: Api
+          Properties:
+            RestApiId: !Ref UsersApi
+            Path: /users/refresh-token/
+            Method: post

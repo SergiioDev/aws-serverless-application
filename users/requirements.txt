@@ -5,3 +5,4 @@ marshmallow
 dnspython
 pyjwt
 argon2-cffi
+cryptography

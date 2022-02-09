@@ -4,23 +4,24 @@ import jwt
 
 
 def create_access_token(result):
-    access_token = jwt.encode({
-        "id": result["_id"],
-        "email": result["email"],
-        "username": result["username"],
+    jwt_info = jwt.encode({
+        "id": str(result["_id"]),
         "first_name": result["first_name"],
-        "expiration": datetime.datetime.utcnow() + datetime.timedelta(seconds=300)}, os.environ['SECRET_KEY'])
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=300)}, os.environ['SECRET_KEY'],"HS256")
 
-    return access_token
+    return jwt_info
 
 
-def refresh_access_token(token):
+def refresh_token(token):
     try:
-        result = jwt.decode(token, os.environ['SECRET_KEY'])
-        jwt_info = jwt.encode({**result, "expiration": datetime.datetime.utcnow() + datetime.timedelta(seconds=300)},
+        print(token)
+        result = jwt.decode(token, str(os.environ['SECRET_KEY']), "HS256")
+        jwt_info = jwt.encode({**result, "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=300)},
                               os.environ['SECRET_KEY'])
-        return {"status": "success", "data": jwt_info.decode()}
-    except jwt.exceptions.DecodeError:
-        return {"status": "failed", "message": "Unable to decode data"}
+
+        return {"status": True, "data": jwt_info, "message": None}
     except jwt.ExpiredSignatureError:
-        return {"status": "failed", "message": "Token has expired"}
+        return {"status": False, "data": None, "message": "Token has expired !"}
+    except jwt.exceptions.DecodeError:
+        return {"status": False, "data": None, "message": "Unable to decode data !"}
+
