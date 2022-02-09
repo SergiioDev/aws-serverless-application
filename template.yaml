@@ -37,9 +37,6 @@ Resources:
       CodeUri: users/
       Handler: create.app.lambda_handler
       Runtime: python3.9
-      Environment:
-        Variables:
-          SECRET_KEY: secret-info
       Architectures:
         - x86_64
       Events:
@@ -49,6 +46,8 @@ Resources:
             RestApiId: !Ref UsersApi
             Path: /users/
             Method: post
+            Auth:
+              Authorizer: NONE
 
   UsersRetrieveById:
     Type: AWS::Serverless::Function
@@ -113,9 +112,6 @@ Resources:
       CodeUri: users/
       Handler: login.app.lambda_handler
       Runtime: python3.9
-      Environment:
-        Variables:
-          SECRET_KEY: secret-info
       Events:
         LoginAPI:
           Type: Api
@@ -123,6 +119,8 @@ Resources:
             RestApiId: !Ref UsersApi
             Path: /users/login/
             Method: post
+            Auth:
+              Authorizer: NONE
 
   RefreshToken:
     Type: AWS::Serverless::Function
