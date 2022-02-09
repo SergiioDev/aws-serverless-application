@@ -1,8 +1,9 @@
-requests
-ujson
-pymongo
-marshmallow
-dnspython
-pyjwt
-argon2-cffi
-cryptography
+requests==2.27.1
+ujson==5.1.0
+pymongo==4.0.1
+marshmallow==3.14.1
+dnspython==2.2.0
+pyjwt==2.3.0
+argon2-cffi==21.3.0
+cryptography==36.0.1
+pytest==7.0.0
